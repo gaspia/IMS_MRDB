@@ -52,8 +52,8 @@ Just run the command below and connect to the ´localhost´server on port ´1433
 
 You'll be pulling an image from my public repo with everyting already running (hopefully)
 
-> $ docker pull gaspia/ims_msssql
-> $ docker run -d --name AdventureWorks -p 1433:1433  gaspia/ims_msssql
+> $ docker pull gaspia/ims_msssql  
+> $ docker run -d --name AdventureWorks -p 1433:1433  gaspia/ims_msssql  
 
 Once you've pulled the image, you can also use the docker-desktop GUI to run, kill, shell your container image (and discard the last command).
 
@@ -65,20 +65,18 @@ If you prefer to build the docker image by yourself, so you can install addition
 
 To build the image, just make sure you are in the root of the repo where the ´Dockerfile´ is and run :
 
-> $ docker build -t adventureworks:2019 .
+> $ docker build -t adventureworks:2019 .  
 
 To run it:
 
-> $ docker run -p 1433:1433 --name AdventureWorks -d adventureworks:2019
+> $ docker run -p 1433:1433 --name AdventureWorks -d adventureworks:2019  
 
 The image is based on Microsoft oficial mssql server installation in ubunto, the DB files (.bak) are downloaded and restored into sql server et voila.
 
 ### Accessing a shell to gain container access
 
-> $ docker exec -i -t AdventureWorks bash
+> $ docker exec -i -t AdventureWorks bash  
 
 ## Connecting do the MSSQL Server
 
 Just open the Azure Data Studio, add a new server connection where the server/host is ´localhost´, Authentication is ´SQL server´, user ´sa´ and password is ´ThisIsAReallyCoolPassword123´.
-
-
