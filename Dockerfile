@@ -20,7 +20,7 @@ USER mssql
 # Launch SQL Server, confirm startup is complete, restore the database, then terminate SQL Server.
 RUN ( /opt/mssql/bin/sqlservr & ) | grep -q "Service Broker manager has started" \
     && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SA_PASSWORD} -Q 'RESTORE DATABASE AdventureWorks FROM DISK = "/var/opt/mssql/backup/AdventureWorks2019.bak" WITH MOVE "AdventureWorks2017" to "/var/opt/mssql/data/AdventureWorks.mdf", MOVE "AdventureWorks2017_Log" to "/var/opt/mssql/data/AdventureWorks_log.ldf", NOUNLOAD, STATS = 5' \
-    && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SA_PASSWORD} -Q 'RESTORE DATABASE AdventureWorksLT FROM DISK = "/var/opt/mssql/backup/AdventureWorksLT2019.bak" WITH MOVE "AdventureWorks2017" to "/var/opt/mssql/data/AdventureWorksLT.mdf", MOVE "AdventureWorks2017_Log" to "/var/opt/mssql/data/AdventureWorksLT_log.ldf", NOUNLOAD, STATS = 5' \
+    && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${SA_PASSWORD} -Q 'RESTORE DATABASE AdventureWorksLT FROM DISK = "/var/opt/mssql/backup/AdventureWorksLT2019.bak" WITH MOVE "AdventureWorksLT2012_Data" to "/var/opt/mssql/data/AdventureWorksLT.mdf", MOVE "AdventureWorksLT2012_Log" to "/var/opt/mssql/data/AdventureWorksLT_log.ldf", NOUNLOAD, STATS = 5' \
     && pkill sqlservr
 
 CMD ["/opt/mssql/bin/sqlservr"]

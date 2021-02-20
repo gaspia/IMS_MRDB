@@ -15,12 +15,13 @@ It's assumed you already have a valid Azure subscription
 
 ## Environment
 
-Using and old mid2014 MacBook Air, so it I ran it here, you can run it also.
+Using and old mid2014 MacBook Air BigSur, so it I ran it here, you can run it also.
 
 Main tools used:
 
 - VSCode with MS Azure tools and MS SQL Server extensions installed
 - Azure cli for macOS
+- Docker-desktop and Docker
 
 ### Environment setup
 
@@ -35,18 +36,49 @@ After the login, you should be able to navigate your server from the left hand-s
 In MacOS, install via brew:
 > $brew update && brew install azure-cli  
 
-## AventureWorks DBs deployment
+### Docker
 
-Download the .bak files for the AdventureWorks 2019 DBs (LT and OLTP versions)
-> $ wget <https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2019.bak>  
-> $ wget <https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksLT2019.bak>  
-> $ mv AdventureWorks2019.bak AdventureWorks.bak  
-> $ mv AdventureWorksLT2019.bak AdventureWorksLT.bak
+again, install via brew:
+> $brew update && brew install docker  
+> $brew install docker-desktop --cask  
 
-You'll also need the [mssql tools]('https://cloudblogs.microsoft.com/sqlserver/2017/05/16/sql-server-command-line-tools-for-macos-released/') for MacOS from MS
-> $ brew install --no-sandbox msodbcsql mssql-tools
+## Containder and AventureWorks DBs deployment
 
-Login to Azure
-> $ az login
+You have 2 options, either build the image yourself using the ´Dockerfile´ in this repo, or just pull an already built image with mssql and both DBs restored.
 
-Follow the instructions on the screen and browser
+### Running the already built image
+
+Just run the command below and connect to the ´localhost´server on port ´1433´ with user ´sa´ password ´ThisIsAReallyCoolPassword123´.
+
+You'll be pulling an image from my public repo with everyting already running (hopefully)
+
+> $ docker pull gaspia/ims_msssql
+> $ docker run -d --name AdventureWorks -p 1433:1433  gaspia/ims_msssql
+
+Once you've pulled the image, you can also use the docker-desktop GUI to run, kill, shell your container image (and discard the last command).
+
+see below how to access to an interactive shell in the container.
+
+### Building the docker image yourself
+
+If you prefer to build the docker image by yourself, so you can install additional features, you can start by the base ´Dockerfile´, edit it as per your preferences.
+
+To build the image, just make sure you are in the root of the repo where the ´Dockerfile´ is and run :
+
+> $ docker build -t adventureworks:2019 .
+
+To run it:
+
+> $ docker run -p 1433:1433 --name AdventureWorks -d adventureworks:2019
+
+The image is based on Microsoft oficial mssql server installation in ubunto, the DB files (.bak) are downloaded and restored into sql server et voila.
+
+### Accessing a shell to gain container access
+
+> $ docker exec -i -t AdventureWorks bash
+
+## Connecting do the MSSQL Server
+
+Just open the Azure Data Studio, add a new server connection where the server/host is ´localhost´, Authentication is ´SQL server´, user ´sa´ and password is ´ThisIsAReallyCoolPassword123´.
+
+
